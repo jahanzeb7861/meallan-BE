@@ -1,0 +1,58 @@
+import { Repository } from 'typeorm';
+import { Restaurant } from 'src/entities/Restaurant.entity';
+import { CreateRestaurantDto } from 'src/dtos/restaurants/CreateRestaurant.dto';
+import { CreateRestaurantResponseDto } from 'src/dtos/restaurants/CreateRestaurantResponse.dto';
+import { User } from 'src/entities/User.entity';
+import { Membership } from 'src/entities/Membership.entity';
+import { RestaurantDataDto } from 'src/dtos/restaurants/RestaurantData.dto';
+import { Order } from 'src/entities/Order.entity';
+import { OrderDto } from 'src/dtos/orders/Order.dto';
+import { Meal } from 'src/entities/Meal.entity';
+import { Deal } from 'src/entities/Deal.entity';
+import { DealDto } from 'src/dtos/deals/Deal.dto';
+import { GroupDto } from 'src/dtos/groups/Group.dto';
+import { MenuGroup } from 'src/entities/MenuGroup.entity';
+import { MealDto } from 'src/dtos/menus/Meal.dto';
+export declare class RestaurantsService {
+    private restaurantRepository;
+    private userRepository;
+    private memberRepository;
+    private orderRepository;
+    private mealRepository;
+    private dealRepository;
+    private groupRepository;
+    constructor(restaurantRepository: Repository<Restaurant>, userRepository: Repository<User>, memberRepository: Repository<Membership>, orderRepository: Repository<Order>, mealRepository: Repository<Meal>, dealRepository: Repository<Deal>, groupRepository: Repository<MenuGroup>);
+    findRestaurants(latitude: string, longitude: string, distance: string): Promise<CreateRestaurantResponseDto[]>;
+    createRestaurant(createrRestaurantDto: CreateRestaurantDto): Promise<Restaurant>;
+    findRestaurantByCiteria(title: String): Promise<Restaurant[]>;
+    findRestaurantById(restaurantId: number, userId: number): Promise<RestaurantDataDto>;
+    findRestaurantsByOwner(ownerID: number): Promise<Restaurant[]>;
+    findMealById(id: number): Promise<Meal>;
+    findDeals(restaurantId: number): Promise<Deal[]>;
+    addDeal(restaurantId: number, label: string): Promise<Deal>;
+    deleteDeal(id: number): Promise<import("typeorm").DeleteResult>;
+    updateDeal(id: number, dealDto: DealDto): Promise<{
+        id: number;
+        label: string;
+        picture: string;
+    } & Deal>;
+    subscribeUser(userId: number, restaurantId: number): Promise<Membership>;
+    createOrder(orderDto: OrderDto): Promise<void>;
+    updateRestaurant(id: number, createRestaurantDto: CreateRestaurantDto): Promise<{
+        id: number;
+        address: string;
+        title: string;
+        picture: string;
+        latitude: number;
+        longitude: number;
+    } & Restaurant>;
+    findCashiersByOwner(ownerID: number, restaurantId: number): Promise<Restaurant>;
+    findRestaurantGroups(restaurantId: number): Promise<Restaurant[]>;
+    addRestaurantGroup(restaurantId: number, groupDto: GroupDto): Promise<MenuGroup>;
+    updateRestaurantGroup(groupId: number, groupDto: GroupDto): Promise<MenuGroup>;
+    deleteGroup(id: number): Promise<import("typeorm").DeleteResult>;
+    findRestaurantMeals(restaurantId: number): Promise<Restaurant[]>;
+    addRestaurantMeal(groupId: number, mealDto: MealDto[]): Promise<Meal[]>;
+    updateRestaurantMeal(mealId: number, mealDto: MealDto): Promise<Meal>;
+    deleteMeal(id: number): Promise<import("typeorm").DeleteResult>;
+}
